@@ -262,7 +262,7 @@ Click the **Register** button and you'll be asked to click on a link in order to
 
 This is a shortcut because you don't have an email sender registered, so the app can't do an email verification.
 
-![image-20230702111538982](E:/AllMyFiles2/Repos/test/MauiXamlMediaElement/images/image-20230702111538982.png)
+![image-20230702111538982](images/image-20230702111538982-1688430210326-1.png)
 
 Once you click this link, you can look in the **dbo.AspNetUsers** table, and see that the **EmailConfirmed** field in your user record has been set to *True*. If you do not do this, authentication will fail.
 
