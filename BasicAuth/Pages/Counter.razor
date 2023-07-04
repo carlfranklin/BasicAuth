@@ -1,0 +1,57 @@
+﻿@page "/counter"
+@attribute [Authorize]
+@using System.Security.Claims
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<br/><br/>
+<div style="color:red;">
+    @errorMessage
+</div>
+
+@code {
+    private int currentCount = 0;
+    string errorMessage = string.Empty;
+
+    ClaimsPrincipal user = null;
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    private void IncrementCount()
+    {
+        errorMessage = "";
+
+        // this should never happen because viewing the page is authorized
+        if (user == null) return;
+
+        // this should also never happen because viewing the page is authorized
+        if (!user.Identity.IsAuthenticated) return;
+
+        if (user.IsInRole("counterClicker"))
+        {
+            // success!
+            currentCount++;
+        }
+        else
+        {
+            // wah-wah
+            errorMessage = "You do not have permission to increment the counter.";
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            user = authState?.User;
+        }
+    }
+}
